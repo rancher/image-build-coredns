@@ -8,6 +8,7 @@ ARG TAG=""
 RUN apt update     && \ 
     apt upgrade -y && \ 
     apt install -y ca-certificates git
+
 RUN git clone --depth=1 https://github.com/coredns/coredns.git
 RUN cd /go/coredns                     && \
     git fetch --all --tags --prune     && \
@@ -16,6 +17,6 @@ RUN cd /go/coredns                     && \
 
 FROM ubi
 RUN microdnf update -y && \ 
-	rm -rf /var/cache/yum
+    rm -rf /var/cache/yum
 
 COPY --from=builder /go/coredns/coredns /usr/local/bin
