@@ -19,4 +19,6 @@ FROM ubi
 RUN microdnf update -y && \ 
     rm -rf /var/cache/yum
 
-COPY --from=builder /go/coredns/coredns /usr/local/bin
+COPY --from=builder /go/coredns/coredns /coredns
+
+ENTRYPOINT ["/coredns"]
