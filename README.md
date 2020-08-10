@@ -1,7 +1,7 @@
-# ranchertest/coredns
+# rancher/coredns
 
 ## Build
 
 ```sh
-TAG=v0.4.0 make
+TAG=v1.6.9 make
 ```
