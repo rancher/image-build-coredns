@@ -1,4 +1,4 @@
-# rancher/coredns
+# rancher/hardened-coredns
 
 ## Build
 
