@@ -4,21 +4,27 @@ ifeq ($(ARCH),)
 ARCH=$(shell go env GOARCH)
 endif
 
+BUILD_META=-build$(shell date +%Y%m%d)
 ORG ?= rancher
 PKG ?= github.com/coredns/coredns
 SRC ?= github.com/coredns/coredns
-TAG ?= v1.6.9
+TAG ?= v1.6.9$(BUILD_META)
 
 ifneq ($(DRONE_TAG),)
 TAG := $(DRONE_TAG)
 endif
 
+ifeq (,$(filter %$(BUILD_META),$(TAG)))
+$(error TAG needs to end with build metadata: $(BUILD_META))
+endif
+
 .PHONY: image-build
 image-build:
 	docker build \
+		--pull \
 		--build-arg PKG=$(PKG) \
 		--build-arg SRC=$(SRC) \
-		--build-arg TAG=$(TAG) \
+		--build-arg TAG=$(TAG:$(BUILD_META)=) \
 		--tag $(ORG)/hardened-coredns:$(TAG) \
 		--tag $(ORG)/hardened-coredns:$(TAG)-$(ARCH) \
 	.
