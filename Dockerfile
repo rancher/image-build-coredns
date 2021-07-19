@@ -12,7 +12,7 @@ RUN set -x \
 # setup the build
 ARG SRC=github.com/coredns/coredns
 ARG PKG=github.com/coredns/coredns
-ARG TAG="v1.6.9"
+ARG TAG="v1.8.3"
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
 WORKDIR $GOPATH/src/${PKG}
 RUN git fetch --all --tags --prune
