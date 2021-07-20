@@ -8,7 +8,7 @@ BUILD_META=-build$(shell date +%Y%m%d)
 ORG ?= rancher
 PKG ?= github.com/coredns/coredns
 SRC ?= github.com/coredns/coredns
-TAG ?= v1.6.9$(BUILD_META)
+TAG ?= v1.8.3$(BUILD_META)
 
 ifneq ($(DRONE_TAG),)
 TAG := $(DRONE_TAG)
