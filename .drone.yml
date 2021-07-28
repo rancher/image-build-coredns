@@ -12,7 +12,8 @@ steps:
   pull: always
   image: rancher/hardened-build-base:v1.15.8b5
   commands:
-  - make DRONE_TAG=${DRONE_TAG}
+  - make DRONE_TAG=${DRONE_TAG} image-build-coredns
+  - make DRONE_TAG=${DRONE_TAG} image-build-autoscaler
   volumes:
   - name: docker
     path: /var/run/docker.sock
@@ -21,7 +22,8 @@ steps:
   image: rancher/hardened-build-base:v1.15.8b5
   commands:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - make DRONE_TAG=${DRONE_TAG} image-push image-manifest
+  - make DRONE_TAG=${DRONE_TAG} image-push-coredns image-manifest-coredns
+  - make DRONE_TAG=${DRONE_TAG} image-push-autoscaler image-manifest-autoscaler
   environment:
     DOCKER_PASSWORD:
       from_secret: docker_password
@@ -37,7 +39,8 @@ steps:
 - name: scan
   image: rancher/hardened-build-base:v1.15.8b5
   commands:
-  - make DRONE_TAG=${DRONE_TAG} image-scan
+  - make DRONE_TAG=${DRONE_TAG} image-scan-coredns
+  - make DRONE_TAG=${DRONE_TAG} image-scan-autoscaler
   volumes:
   - name: docker
     path: /var/run/docker.sock
