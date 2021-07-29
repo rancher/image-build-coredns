@@ -44,6 +44,23 @@ RUN go-assert-static.sh cluster-proportional-autoscaler
 RUN go-assert-boring.sh cluster-proportional-autoscaler
 RUN install -s cluster-proportional-autoscaler /usr/local/bin
 
+# setup the dnsNodeCache build
+FROM base-builder as dnsNodeCache-builder
+ARG SRC=github.com/kubernetes/dns
+ARG PKG=github.com/kubernetes/dns
+RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
+ARG TAG
+ARG ARCH
+WORKDIR $GOPATH/src/${PKG}
+RUN git tag --list
+RUN git fetch --all --tags --prune
+RUN git checkout tags/${TAG} -b ${TAG}
+RUN GOARCH=${ARCH} GO_LDFLAGS="-linkmode=external -X ${PKG}/pkg/version.VERSION=${TAG}" \
+    go-build-static.sh -gcflags=-trimpath=${GOPATH}/src -o . ./...
+RUN go-assert-static.sh node-cache
+RUN go-assert-boring.sh node-cache
+RUN install -s node-cache /usr/local/bin
+
 FROM ubi as coredns
 RUN microdnf update -y && \
     rm -rf /var/cache/yum
@@ -55,3 +72,10 @@ RUN microdnf update -y && \
     rm -rf /var/cache/yum
 COPY --from=autoscaler-builder /usr/local/bin/cluster-proportional-autoscaler /cluster-proportional-autoscaler
 ENTRYPOINT ["/cluster-proportional-autoscaler"]
+
+FROM ubi as dnsNodeCache
+RUN microdnf update -y && \
+    microdnf install nc && \
+    rm -rf /var/cache/yum
+COPY --from=dnsNodeCache-builder /usr/local/bin/node-cache /node-cache
+ENTRYPOINT ["/node-cache"]

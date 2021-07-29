@@ -10,7 +10,10 @@ PKG_COREDNS ?= github.com/coredns/coredns
 SRC_COREDNS ?= github.com/coredns/coredns
 PKG_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler
 SRC_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler 
+PKG_NODECACHE ?= github.com/kubernetes/dns
+SRC_NODECACHE ?= github.com/kubernetes/dns
 TAG ?= v1.8.3$(BUILD_META)
+NODECACHE_TAG ?=1.19.1$(BUILD_META)
 export DOCKER_BUILDKIT?=1
 
 ifneq ($(DRONE_TAG),)
@@ -19,6 +22,10 @@ endif
 
 ifeq (,$(filter %$(BUILD_META),$(TAG)))
 $(error TAG needs to end with build metadata: $(BUILD_META))
+endif
+
+ifeq (,$(filter %$(BUILD_META),$(NODECACHE_TAG)))
+$(error NODECACHE_TAG needs to end with build metadata: $(BUILD_META))
 endif
 
 AUTOSCALER_BUILD_TAG := $(TAG:v%=%)
@@ -79,3 +86,30 @@ image-manifest-autoscaler:
 image-scan-autoscaler:
 	trivy --severity $(SEVERITIES) --no-progress --ignore-unfixed $(ORG)/hardened-cluster-autoscaler:$(TAG)
 
+.PHONY: image-build-dnsnodecache
+image-build-dnsnodecache:
+	docker build \
+		--pull \
+		--build-arg PKG=$(PKG_NODECACHE) \
+		--build-arg SRC=$(SRC_NODECACHE) \
+		--build-arg TAG=$(NODECACHE_TAG:$(BUILD_META)=) \
+		--target dnsNodeCache \
+		--tag $(ORG)/hardened-dns-node-cache:$(NODECACHE_TAG) \
+		--tag $(ORG)/hardened-dns-node-cache:$(NODECACHE_TAG)-$(ARCH) \
+	.
+
+.PHONY: image-push-dnsnodecache
+image-push-dnsnodecache:
+	docker push $(ORG)/hardened-dns-node-cache:$(NODECACHE_TAG)-$(ARCH)
+
+.PHONY: image-manifest-dnsnodecache
+image-manifest-dnsnodecache:
+	DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create --amend \
+		$(ORG)/hardened-dns-node-cache:$(NODECACHE_TAG) \
+		$(ORG)/hardened-dns-node-cache:$(NODECACHE_TAG)-$(ARCH)
+	DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push \
+		$(ORG)/hardened-dns-node-cache:$(NODECACHE_TAG)
+
+.PHONY: image-scan-dnsnodecache
+image-scan-dnsnodecache:
+	trivy --severity $(SEVERITIESdnsNodeCache) --no-progress --ignore-unfixed $(ORG)/hardened-dns-node-cache:$(NODECACHE_TAG)

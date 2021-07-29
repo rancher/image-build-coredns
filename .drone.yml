@@ -14,6 +14,7 @@ steps:
   commands:
   - make DRONE_TAG=${DRONE_TAG} image-build-coredns
   - make DRONE_TAG=${DRONE_TAG} image-build-autoscaler
+  - make DRONE_TAG=${DRONE_TAG} image-build-dnsnodecache
   volumes:
   - name: docker
     path: /var/run/docker.sock
@@ -24,6 +25,7 @@ steps:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - make DRONE_TAG=${DRONE_TAG} image-push-coredns image-manifest-coredns
   - make DRONE_TAG=${DRONE_TAG} image-push-autoscaler image-manifest-autoscaler
+  - make DRONE_TAG=${DRONE_TAG} image-push-dnsnodecache image-manifest-dnsnodecache
   environment:
     DOCKER_PASSWORD:
       from_secret: docker_password
@@ -41,6 +43,7 @@ steps:
   commands:
   - make DRONE_TAG=${DRONE_TAG} image-scan-coredns
   - make DRONE_TAG=${DRONE_TAG} image-scan-autoscaler
+  - make DRONE_TAG=${DRONE_TAG} image-scan-dnsnodecache
   volumes:
   - name: docker
     path: /var/run/docker.sock
