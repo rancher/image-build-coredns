@@ -16,7 +16,7 @@ RUN set -x \
 FROM base-builder as coredns-builder
 ARG SRC=github.com/coredns/coredns
 ARG PKG=github.com/coredns/coredns
-ARG ARCH="amd64"
+ARG ARCH
 ARG TAG
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
 WORKDIR $GOPATH/src/${PKG}
