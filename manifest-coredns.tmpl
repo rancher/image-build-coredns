@@ -1,0 +1,12 @@
+image: rancher/hardened-coredns:{{build.tag}}
+manifests:
+  -
+    image: rancher/hardened-coredns:{{build.tag}}-amd64
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: rancher/hardened-coredns:{{build.tag}}-s390x
+    platform:
+      architecture: s390x
+      os: linux
