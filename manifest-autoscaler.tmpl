@@ -1,0 +1,12 @@
+image: rancher/hardened-cluster-autoscaler:{{build.tag}}
+manifests:
+  -
+    image: rancher/hardened-cluster-autoscaler:{{build.tag}}-amd64
+    platform:
+      architecture: amd64
+      os: linux
+  -
+    image: rancher/hardened-cluster-autoscaler:{{build.tag}}-s390x
+    platform:
+      architecture: s390x
+      os: linux
