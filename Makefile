@@ -10,7 +10,7 @@ PKG_COREDNS ?= github.com/coredns/coredns
 SRC_COREDNS ?= github.com/coredns/coredns
 PKG_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler
 SRC_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler 
-TAG ?= v1.8.5$(BUILD_META)
+TAG ?= v1.9.1$(BUILD_META)
 export DOCKER_BUILDKIT?=1
 
 ifneq ($(DRONE_TAG),)
@@ -21,7 +21,8 @@ ifeq (,$(filter %$(BUILD_META),$(TAG)))
 $(error TAG needs to end with build metadata: $(BUILD_META))
 endif
 
-AUTOSCALER_BUILD_TAG := $(TAG:v%=%)
+AUTOSCALER_BUILD_TAG := 1.8.5
+AUTOSCALER_TAG := v$(AUTOSCALER_BUILD_TAG)$(BUILD_META)
 
 .PHONY: image-build-coredns
 image-build-coredns:
@@ -58,26 +59,26 @@ image-build-autoscaler:
 		--pull \
 		--build-arg PKG=$(PKG_AUTOSCALER) \
 		--build-arg SRC=$(SRC_AUTOSCALER) \
-		--build-arg TAG=$(AUTOSCALER_BUILD_TAG:$(BUILD_META)=) \
+		--build-arg TAG=$(AUTOSCALER_BUILD_TAG) \
 		--build-arg ARCH=$(ARCH) \
 		--target autoscaler \
-		--tag $(ORG)/hardened-cluster-autoscaler:$(TAG) \
-		--tag $(ORG)/hardened-cluster-autoscaler:$(TAG)-$(ARCH) \
+		--tag $(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG) \
+		--tag $(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG)-$(ARCH) \
 	.
 
 .PHONY: image-push-autoscaler
 image-push-autoscaler:
-	docker push $(ORG)/hardened-cluster-autoscaler:$(TAG)-$(ARCH)
+	docker push $(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG)-$(ARCH)
 
 .PHONY: image-manifest-autoscaler
 image-manifest-autoscaler:
 	DOCKER_CLI_EXPERIMENTAL=enabled docker manifest create --amend \
-		$(ORG)/hardened-cluster-autoscaler:$(TAG) \
-		$(ORG)/hardened-cluster-autoscaler:$(TAG)-$(ARCH)
+		$(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG) \
+		$(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG)-$(ARCH)
 	DOCKER_CLI_EXPERIMENTAL=enabled docker manifest push \
-		$(ORG)/hardened-cluster-autoscaler:$(TAG)
+		$(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG)
 
 .PHONY: image-scan-autoscaler
 image-scan-autoscaler:
-	trivy --severity $(SEVERITIES) --no-progress --ignore-unfixed $(ORG)/hardened-cluster-autoscaler:$(TAG)
+	trivy --severity $(SEVERITIES) --no-progress --ignore-unfixed $(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG)
 

@@ -1,6 +1,6 @@
 ARG UBI_IMAGE=registry.access.redhat.com/ubi7/ubi-minimal:latest
-ARG GO_IMAGE=rancher/hardened-build-base:v1.16.10b7
-ARG TAG="v1.8.5"
+ARG GO_IMAGE=rancher/hardened-build-base:v1.17.8b7
+ARG TAG="v1.9.1"
 ARG ARCH="amd64"
 FROM ${UBI_IMAGE} as ubi
 FROM ${GO_IMAGE} as base-builder
@@ -37,8 +37,8 @@ FROM base-builder as autoscaler-builder
 ARG SRC=github.com/kubernetes-sigs/cluster-proportional-autoscaler
 ARG PKG=github.com/kubernetes-sigs/cluster-proportional-autoscaler
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
-ARG TAG
-ARG ARCH
+ARG TAG="1.8.5"
+ARG ARCH="amd64"
 WORKDIR $GOPATH/src/${PKG}
 RUN git fetch --all --tags --prune
 RUN git checkout tags/${TAG} -b ${TAG}
