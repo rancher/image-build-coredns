@@ -1,12 +1,12 @@
-ARG UBI_IMAGE=registry.access.redhat.com/ubi7/ubi-minimal:latest
+ARG BCI_IMAGE=registry.suse.com/bci/bci-base:latest
 ARG GO_IMAGE=rancher/hardened-build-base:v1.17.8b7
 ARG TAG="v1.9.1"
 ARG ARCH="amd64"
-FROM ${UBI_IMAGE} as ubi
+FROM ${BCI_IMAGE} as bci
 FROM ${GO_IMAGE} as base-builder
 # setup required packages
-RUN set -x \
- && apk --no-cache add \
+RUN set -x && \
+    apk --no-cache add \
     file \
     gcc \
     git \
@@ -26,7 +26,7 @@ RUN GO_LDFLAGS="-linkmode=external -X ${PKG}/coremain.GitCommit=$(git rev-parse 
     go-build-static.sh -gcflags=-trimpath=${GOPATH}/src -o bin/coredns .
 RUN go-assert-static.sh bin/*
 RUN if [ "${ARCH}" != "s390x" ]; then \
-    	go-assert-boring.sh bin/*; \
+    go-assert-boring.sh bin/*; \
     fi
 
 RUN install -s bin/* /usr/local/bin
@@ -46,18 +46,18 @@ RUN GOARCH=${ARCH} GO_LDFLAGS="-linkmode=external -X ${PKG}/pkg/version.VERSION=
     go-build-static.sh -gcflags=-trimpath=${GOPATH}/src -o . ./...
 RUN go-assert-static.sh cluster-proportional-autoscaler
 RUN if [ "${ARCH}" != "s390x" ]; then \
-    	go-assert-boring.sh cluster-proportional-autoscaler; \
+    go-assert-boring.sh cluster-proportional-autoscaler; \
     fi
 RUN install -s cluster-proportional-autoscaler /usr/local/bin
 
-FROM ubi as coredns
-RUN microdnf update -y && \
-    rm -rf /var/cache/yum
+FROM bci as coredns
+RUN zypper update -y && \
+    zypper clean --all
 COPY --from=coredns-builder /usr/local/bin/coredns /coredns
 ENTRYPOINT ["/coredns"]
 
-FROM ubi as autoscaler
-RUN microdnf update -y && \
-    rm -rf /var/cache/yum
+FROM bci as autoscaler
+RUN zypper update -y && \
+    zypper clean --all
 COPY --from=autoscaler-builder /usr/local/bin/cluster-proportional-autoscaler /cluster-proportional-autoscaler
 ENTRYPOINT ["/cluster-proportional-autoscaler"]
