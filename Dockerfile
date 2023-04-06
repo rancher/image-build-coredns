@@ -1,6 +1,6 @@
 ARG BCI_IMAGE=registry.suse.com/bci/bci-base:latest
-ARG GO_IMAGE=rancher/hardened-build-base:v1.17.8b7
-ARG TAG="v1.9.1"
+ARG GO_IMAGE=rancher/hardened-build-base:v1.20.3b1
+ARG TAG="v1.10.1"
 ARG ARCH="amd64"
 FROM ${BCI_IMAGE} as bci
 FROM ${GO_IMAGE} as base-builder
@@ -37,7 +37,7 @@ FROM base-builder as autoscaler-builder
 ARG SRC=github.com/kubernetes-sigs/cluster-proportional-autoscaler
 ARG PKG=github.com/kubernetes-sigs/cluster-proportional-autoscaler
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
-ARG TAG="1.8.5"
+ARG TAG="1.8.6"
 ARG ARCH="amd64"
 WORKDIR $GOPATH/src/${PKG}
 RUN git fetch --all --tags --prune

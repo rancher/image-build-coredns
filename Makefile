@@ -10,7 +10,7 @@ PKG_COREDNS ?= github.com/coredns/coredns
 SRC_COREDNS ?= github.com/coredns/coredns
 PKG_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler
 SRC_AUTOSCALER ?= github.com/kubernetes-sigs/cluster-proportional-autoscaler 
-TAG ?= v1.9.1$(BUILD_META)
+TAG ?= v1.10.1$(BUILD_META)
 export DOCKER_BUILDKIT?=1
 
 ifneq ($(DRONE_TAG),)
@@ -21,7 +21,7 @@ ifeq (,$(filter %$(BUILD_META),$(TAG)))
 $(error TAG needs to end with build metadata: $(BUILD_META))
 endif
 
-AUTOSCALER_BUILD_TAG := 1.8.5
+AUTOSCALER_BUILD_TAG := 1.8.6
 AUTOSCALER_TAG := v$(AUTOSCALER_BUILD_TAG)$(BUILD_META)
 
 .PHONY: image-build-coredns
