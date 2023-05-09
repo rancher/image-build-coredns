@@ -1,7 +1,13 @@
 SEVERITIES = HIGH,CRITICAL
 
-ifeq ($(ARCH),)
-ARCH=$(shell go env GOARCH)
+UNAME_M = $(shell uname -m)
+ARCH=
+ifeq ($(UNAME_M), x86_64)
+	ARCH=amd64
+else ifeq ($(UNAME_M), aarch64)
+	ARCH=arm64
+else 
+	ARCH=$(UNAME_M)
 endif
 
 BUILD_META=-build$(shell date +%Y%m%d)
@@ -14,11 +20,11 @@ TAG ?= v1.10.1$(BUILD_META)
 export DOCKER_BUILDKIT?=1
 
 ifneq ($(DRONE_TAG),)
-TAG := $(DRONE_TAG)
+	TAG := $(DRONE_TAG)
 endif
 
 ifeq (,$(filter %$(BUILD_META),$(TAG)))
-$(error TAG needs to end with build metadata: $(BUILD_META))
+	$(error TAG needs to end with build metadata: $(BUILD_META))
 endif
 
 AUTOSCALER_BUILD_TAG := 1.8.6
