@@ -45,7 +45,7 @@ RUN git checkout tags/${TAG} -b ${TAG}
 RUN GOARCH=${ARCH} GO_LDFLAGS="-linkmode=external -X ${PKG}/pkg/version.VERSION=${TAG}" \
     go-build-static.sh -gcflags=-trimpath=${GOPATH}/src -o . ./...
 RUN go-assert-static.sh cluster-proportional-autoscaler
-RUN if [ "${ARCH}" != "s390x" || "${ARCH}" != "arm64" ]; then \
+RUN if [ "${ARCH}" = "amd64" ]; then \
     	go-assert-boring.sh cluster-proportional-autoscaler; \
     fi
 RUN install -s cluster-proportional-autoscaler /usr/local/bin
