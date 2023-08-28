@@ -86,5 +86,5 @@ image-manifest-autoscaler:
 
 .PHONY: image-scan-autoscaler
 image-scan-autoscaler:
-	trivy --severity $(SEVERITIES) --no-progress --ignore-unfixed $(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG)
+	trivy image --severity $(SEVERITIES) --no-progress --ignore-unfixed $(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG)
 
