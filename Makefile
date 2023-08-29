@@ -57,7 +57,7 @@ image-manifest-coredns:
 
 .PHONY: image-scan-coredns
 image-scan-coredns:
-	trivy --severity $(SEVERITIES) --no-progress --ignore-unfixed $(ORG)/hardened-coredns:$(TAG)
+	trivy image --severity $(SEVERITIES) --no-progress --ignore-unfixed $(ORG)/hardened-coredns:$(TAG)
 
 .PHONY: image-build-autoscaler
 image-build-autoscaler:
