@@ -1,5 +1,5 @@
 ARG GO_IMAGE=rancher/hardened-build-base:v1.20.7b3
-ARG TAG="v1.10.1"
+ARG TAG="v1.11.1"
 ARG ARCH="amd64"
 FROM ${GO_IMAGE} as base-builder
 # setup required packages
@@ -35,11 +35,11 @@ FROM base-builder as autoscaler-builder
 ARG SRC=github.com/kubernetes-sigs/cluster-proportional-autoscaler
 ARG PKG=github.com/kubernetes-sigs/cluster-proportional-autoscaler
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
-ARG TAG="1.8.6"
+ARG TAG="1.8.10"
 ARG ARCH="amd64"
 WORKDIR $GOPATH/src/${PKG}
 RUN git fetch --all --tags --prune
-RUN git checkout tags/${TAG} -b ${TAG}
+RUN git checkout tags/v${TAG} -b ${TAG}
 RUN GOARCH=${ARCH} GO_LDFLAGS="-linkmode=external -X ${PKG}/pkg/version.VERSION=${TAG}" \
     go-build-static.sh -gcflags=-trimpath=${GOPATH}/src -o . ./...
 RUN go-assert-static.sh cluster-proportional-autoscaler
