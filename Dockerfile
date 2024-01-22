@@ -1,8 +1,6 @@
-ARG BCI_IMAGE=registry.suse.com/bci/bci-base
 ARG GO_IMAGE=rancher/hardened-build-base:v1.20.7b3
 ARG TAG="v1.10.1"
 ARG ARCH="amd64"
-FROM ${BCI_IMAGE} as bci
 FROM ${GO_IMAGE} as base-builder
 # setup required packages
 RUN set -x && \
@@ -50,10 +48,10 @@ RUN if [ "${ARCH}" = "amd64" ]; then \
     fi
 RUN install -s cluster-proportional-autoscaler /usr/local/bin
 
-FROM bci as coredns
+FROM scratch as coredns
 COPY --from=coredns-builder /usr/local/bin/coredns /coredns
 ENTRYPOINT ["/coredns"]
 
-FROM bci as autoscaler
+FROM scratch as autoscaler
 COPY --from=autoscaler-builder /usr/local/bin/cluster-proportional-autoscaler /cluster-proportional-autoscaler
 ENTRYPOINT ["/cluster-proportional-autoscaler"]
