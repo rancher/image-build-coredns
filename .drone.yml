@@ -155,6 +155,15 @@ platform:
   os: linux
   arch: amd64
 steps:
+  - name: extract-tag
+    image: alpine
+    commands:
+      - apk add --no-cache make
+      - echo $(make -s print-autoscaler-tag) > ./tag.txt
+    when:
+      event:
+        - tag
+
   - name: push
     image: plugins/manifest:1.2.3
     settings:
@@ -164,9 +173,11 @@ steps:
         from_secret: docker_username
       spec: manifest-autoscaler.tmpl
       ignore_missing: true
+      template: ./tag.txt
     when:
       event:
         - tag
+
 depends_on:
   - linux-amd64
   - linux-arm64

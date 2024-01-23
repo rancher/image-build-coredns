@@ -88,3 +88,6 @@ image-manifest-autoscaler:
 image-scan-autoscaler:
 	trivy image --severity $(SEVERITIES) --no-progress --ignore-unfixed $(ORG)/hardened-cluster-autoscaler:$(AUTOSCALER_TAG)
 
+.PHONY: print-autoscaler-tag
+print-autoscaler-tag:
+	echo ${AUTOSCALER_TAG}
