@@ -1,5 +1,5 @@
 ARG GO_IMAGE=rancher/hardened-build-base:v1.20.7b3
-ARG TAG=v0.9.10
+ARG TAG=v1.11.1
 ARG ARCH="amd64"
 FROM ${GO_IMAGE} as base-builder
 # setup required packages
@@ -15,7 +15,7 @@ FROM base-builder as coredns-builder
 ARG SRC=github.com/coredns/coredns
 ARG PKG=github.com/coredns/coredns
 ARG ARCH
-ARG TAG=v0.9.10
+ARG TAG=v1.11.1
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
 WORKDIR $GOPATH/src/${PKG}
 RUN git fetch --all --tags --prune
