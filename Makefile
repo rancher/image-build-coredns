@@ -14,7 +14,7 @@ BUILD_META=-build$(shell date +%Y%m%d)
 ORG ?= rancher
 PKG ?= github.com/coredns/coredns
 SRC ?= github.com/coredns/coredns
-TAG ?= v1.11.1$(BUILD_META)
+TAG ?= v1.11.2$(BUILD_META)
 export DOCKER_BUILDKIT?=1
 
 ifneq ($(DRONE_TAG),)
