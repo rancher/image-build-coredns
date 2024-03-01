@@ -1,4 +1,4 @@
-ARG GO_IMAGE=rancher/hardened-build-base:v1.20.13b2
+ARG GO_IMAGE=rancher/hardened-build-base:v1.20.14b1
 ARG ARCH="amd64"
 FROM ${GO_IMAGE} as base-builder
 # setup required packages
