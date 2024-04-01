@@ -1,7 +1,5 @@
-ARG BCI_IMAGE=registry.suse.com/bci/bci-busybox
 ARG GO_IMAGE=rancher/hardened-build-base:v1.21.8b1
 ARG ARCH="amd64"
-FROM ${BCI_IMAGE} as bci
 FROM ${GO_IMAGE} as base-builder
 # setup required packages
 RUN set -x && \
@@ -31,6 +29,6 @@ RUN if [ "${ARCH}" != "s390x" || "${ARCH}" != "arm64" ]; then \
 RUN install -s bin/* /usr/local/bin
 RUN coredns --version
 
-FROM bci as coredns
+FROM scratch
 COPY --from=coredns-builder /usr/local/bin/coredns /coredns
 ENTRYPOINT ["/coredns"]
