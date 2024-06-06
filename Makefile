@@ -28,7 +28,6 @@ image-build:
 		--build-arg PKG=$(PKG) \
 		--build-arg SRC=$(SRC) \
 		--build-arg TAG=$(TAG:$(BUILD_META)=) \
-		--build-arg ARCH=$(ARCH) \
 		--target coredns \
 		--tag $(ORG)/hardened-coredns:$(TAG) \
 		--tag $(ORG)/hardened-coredns:$(TAG)-$(ARCH) \
