@@ -31,7 +31,7 @@ RUN xx-go --wrap && \
     go-build-static.sh -gcflags=-trimpath=${GOPATH}/src -o bin/coredns .
 RUN go-assert-static.sh bin/*
 RUN xx-verify --static bin/*
-RUN if [ "${TARGETARCH}" != "s390x" || "${TARGETARCH}" != "arm64" ]; then \
+RUN if [ "${TARGETARCH}" == "amd64" ]; then \
     	go-assert-boring.sh bin/*; \
     fi
 
