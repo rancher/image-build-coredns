@@ -14,11 +14,15 @@ BUILD_META=-build$(shell date +%Y%m%d)
 ORG ?= rancher
 PKG ?= github.com/coredns/coredns
 SRC ?= github.com/coredns/coredns
-TAG ?= v1.11.3$(BUILD_META)
+TAG ?= ${GITHUB_ACTION_TAG}
 export DOCKER_BUILDKIT?=1
 
+ifeq ($(TAG),)
+TAG := v1.11.3$(BUILD_META)
+endif
+
 ifeq (,$(filter %$(BUILD_META),$(TAG)))
-	$(error TAG ${TAG}  needs to end with build metadata: $(BUILD_META))
+$(error TAG $(TAG) needs to end with build metadata: $(BUILD_META))
 endif
 
 .PHONY: image-build
@@ -38,7 +42,7 @@ image-build:
 PHONY: log
 log:
 	@echo "ARCH=$(ARCH)"
-	@echo "TAG=$(TAG)"
+	@echo "TAG=$(TAG:$(BUILD_META)=)"
 	@echo "ORG=$(ORG)"
 	@echo "PKG=$(PKG)"
 	@echo "SRC=$(SRC)"
