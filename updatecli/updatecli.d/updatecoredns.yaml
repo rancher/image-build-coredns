@@ -35,8 +35,8 @@ targets:
     disablesourceinput: true
     spec:
       file: Makefile
-      matchpattern: '(?m)^TAG \?\= (.*)'
-      replacepattern: 'TAG ?= {{ source "coredns" }}$$(BUILD_META)'
+      matchpattern: '(?m)^TAG \:\= (.*)'
+      replacepattern: 'TAG := {{ source "coredns" }}$$(BUILD_META)'
 
   readme:
     name: "Bump to latest coredns version in README"
