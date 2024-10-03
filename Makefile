@@ -32,7 +32,6 @@ BUILD_OPTS = \
 	--build-arg PKG=$(PKG) \
 	--build-arg SRC=$(SRC) \
 	--build-arg TAG=$(TAG:$(BUILD_META)=) \
-	--target coredns \
 	--tag "$(IMAGE)"
 
 .PHONY: image-build
