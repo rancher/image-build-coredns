@@ -18,7 +18,7 @@ RUN set -x && \
 FROM --platform=$BUILDPLATFORM base-builder as coredns-builder
 ARG SRC=github.com/coredns/coredns
 ARG PKG=github.com/coredns/coredns
-ARG TAG=v1.11.3
+ARG TAG=v011
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
 WORKDIR $GOPATH/src/${PKG}
 RUN git fetch --all --tags --prune
