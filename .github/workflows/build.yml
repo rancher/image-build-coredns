@@ -4,13 +4,14 @@ on:
       - master
   pull_request:
 
+permissions:
+  security-events: write # upload Sarif results
+  contents: read
+  id-token: write
+
 name: Build
 jobs:
   build-amd64:
-    permissions:
-      security-events: write # upload Sarif results
-      contents: read
-      id-token: write
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -22,6 +23,7 @@ jobs:
         echo "$(make -s log | grep TAG)" >> "$GITHUB_ENV"
 
     - name: "Read secrets"
+      id: read-secrets
       uses: rancher-eio/read-vault-secrets@main
       with:
         secrets: |
@@ -62,12 +64,7 @@ jobs:
         sarif_file: 'trivy-results.sarif'
 
   build-arm64:
-    permissions:
-      security-events: write # upload Sarif results
-      contents: read
-      id-token: write
     runs-on: ubuntu-latest
-
     steps:
     - name: Check out code
       uses: actions/checkout@v4
