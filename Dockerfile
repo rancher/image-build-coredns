@@ -16,7 +16,7 @@ RUN set -x && \
 
 # setup the coredns build
 FROM --platform=$BUILDPLATFORM base-builder as coredns-builder
-ARG SRC=github.com/coredns/coredns
+ARG SRC=github.com/rancher/release-coredns
 ARG PKG=github.com/coredns/coredns
 ARG TAG=v1.12.0
 RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}

@@ -13,7 +13,7 @@ endif
 
 BUILD_META=-build$(shell date +%Y%m%d)
 PKG ?= github.com/coredns/coredns
-SRC ?= github.com/coredns/coredns
+SRC ?= github.com/rancher/release-coredns
 TAG ?= ${GITHUB_ACTION_TAG}
 export DOCKER_BUILDKIT?=1
 
