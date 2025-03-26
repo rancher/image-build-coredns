@@ -2,10 +2,10 @@ ARG BCI_IMAGE=registry.suse.com/bci/bci-busybox
 ARG GO_IMAGE=rancher/hardened-build-base:v1.23.6b1
 
 # Image that provides cross compilation tooling.
-FROM --platform=$BUILDPLATFORM rancher/mirrored-tonistiigi-xx:1.5.0 as xx
+FROM --platform=$BUILDPLATFORM rancher/mirrored-tonistiigi-xx:1.5.0 AS xx
 
-FROM ${BCI_IMAGE} as bci
-FROM --platform=$BUILDPLATFORM ${GO_IMAGE} as base-builder
+FROM ${BCI_IMAGE} AS bci
+FROM --platform=$BUILDPLATFORM ${GO_IMAGE} AS base-builder
 # copy xx scripts to your build stage
 COPY --from=xx / /
 RUN apk add file make git clang lld
@@ -15,7 +15,7 @@ RUN set -x && \
     xx-apk --no-cache add musl-dev gcc lld 
 
 # setup the coredns build
-FROM --platform=$BUILDPLATFORM base-builder as coredns-builder
+FROM --platform=$BUILDPLATFORM base-builder AS coredns-builder
 ARG SRC=github.com/coredns/coredns
 ARG PKG=github.com/coredns/coredns
 ARG TAG=v1.12.0
@@ -38,11 +38,11 @@ RUN if [ "${TARGETARCH}" = "amd64" ] || [ "${TARGETARCH}" = "arm64" ]; then \
 RUN install bin/* /usr/local/bin
 RUN coredns --version
 
-FROM ${GO_IMAGE} as strip_binary
+FROM ${GO_IMAGE} AS strip_binary
 #strip needs to run on TARGETPLATFORM, not BUILDPLATFORM
 COPY --from=coredns-builder /usr/local/bin/coredns /coredns
 RUN strip /coredns
 
-FROM bci as coredns
+FROM bci AS coredns
 COPY --from=strip_binary /coredns /coredns
 ENTRYPOINT ["/coredns"]
