@@ -64,4 +64,4 @@ log:
 
 .PHONY: image-scan
 image-scan:
-	trivy image --severity $(SEVERITIES) --no-progress --ignore-unfixed $(ORG)/hardened-coredns:$(TAG)
+	trivy image --severity $(SEVERITIES) --no-progress --ignore-unfixed $(IMAGE)
