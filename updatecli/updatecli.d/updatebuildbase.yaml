@@ -6,7 +6,7 @@ sources:
     name: Get latest Golang version based on go.mod
     kind: file
     spec:
-      file: https://raw.githubusercontent.com/coredns/coredns/master/go.mod
+      file: https://raw.githubusercontent.com/v1.12.2/go.mod
       matchpattern: 'go ([0-9]+\.[0-9]+)'
     transformers:
       - trimprefix: "go "
