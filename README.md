@@ -3,5 +3,5 @@
 ## Build
 
 ```sh
-TAG=v1.12.2 make
+TAG=v011 make
 ```
