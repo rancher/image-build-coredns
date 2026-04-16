@@ -23,6 +23,9 @@ RUN git clone --depth=1 https://${SRC}.git $GOPATH/src/${PKG}
 WORKDIR $GOPATH/src/${PKG}
 RUN git fetch --all --tags --prune
 RUN git checkout tags/${TAG} -b ${TAG}
+RUN go mod edit -replace google.golang.org/grpc=google.golang.org/grpc@v1.79.3 && \
+    go mod edit -replace go.opentelemetry.io/otel/sdk=go.opentelemetry.io/otel/sdk@v1.43.0 && \
+    go mod tidy
 RUN go mod download
 # cross-compilation setup
 ARG TARGETPLATFORM TARGETARCH
