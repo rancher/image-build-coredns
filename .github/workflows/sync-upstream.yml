@@ -28,7 +28,7 @@ jobs:
           private-key: ${{ env.PRIVATE_KEY }}
 
       - name: Sync Upstream Releases
-        uses: rancher/ecm-distro-tools/actions/sync-upstream-release@2de55f4810410f9a0a5f11b2ede6886e706d8706 # v0.71.0
+        uses: rancher/ecm-distro-tools/actions/sync-upstream-release@0cb798f5f291022a6f6008d676f7253c8520787a # v0.73.2
         with:
           upstream-owner: 'coredns'
           upstream-repo: 'coredns'
