@@ -1,7 +1,5 @@
-# golang.org/x/text: CVE-2026-56852 (infinite loop on invalid input).
-# Drop once upstream requires golang.org/x/text >= v0.39.0.
--replace golang.org/x/text=golang.org/x/text@v0.39.0
-
-# google.golang.org/grpc: GHSA-hrxh-6v49-42gf (xDS RBAC auth bypass, HTTP/2 Rapid Reset DoS).
-# Drop once upstream requires google.golang.org/grpc >= v1.82.1.
--replace google.golang.org/grpc=google.golang.org/grpc@v1.82.1
+# go-mod-overrides lists `go mod edit` directives (one per line) that are
+# applied to the upstream coredns go.mod before building via go-mod-overrides.sh.
+# Use it to force patched dependency versions, e.g. to address CVEs not yet
+# picked up upstream:
+#   -replace golang.org/x/text=golang.org/x/text@v0.39.0
