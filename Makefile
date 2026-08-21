@@ -16,7 +16,7 @@ TAG ?= ${GITHUB_ACTION_TAG}
 export DOCKER_BUILDKIT?=1
 
 ifeq ($(TAG),)
-TAG := v1.14.7$(BUILD_META)
+TAG := $(shell cat TAG)$(BUILD_META)
 endif
 
 ifeq (,$(filter %$(BUILD_META),$(TAG)))
