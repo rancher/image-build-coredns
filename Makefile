@@ -12,8 +12,6 @@ ifndef TARGET_PLATFORMS
 endif
 
 BUILD_META=-build$(shell date +%Y%m%d)
-PKG ?= github.com/coredns/coredns
-SRC ?= github.com/coredns/coredns
 TAG ?= ${GITHUB_ACTION_TAG}
 export DOCKER_BUILDKIT?=1
 
@@ -29,8 +27,6 @@ REPO ?= rancher
 IMAGE = $(REPO)/hardened-coredns:$(TAG)
 BUILD_OPTS = \
 	--platform=$(TARGET_PLATFORMS) \
-	--build-arg PKG=$(PKG) \
-	--build-arg SRC=$(SRC) \
 	--build-arg TAG=$(TAG:$(BUILD_META)=) \
 	--tag "$(IMAGE)"
 
@@ -60,8 +56,6 @@ log:
 	@echo "TAG=$(TAG:$(BUILD_META)=)"
 	@echo "REPO=$(REPO)"
 	@echo "IMAGE=$(IMAGE)"
-	@echo "PKG=$(PKG)"
-	@echo "SRC=$(SRC)"
 	@echo "BUILD_META=$(BUILD_META)"
 	@echo "UNAME_M=$(UNAME_M)"
 	@echo "TARGET_PLATFORMS=$(TARGET_PLATFORMS)"
