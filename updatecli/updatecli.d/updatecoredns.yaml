@@ -19,26 +19,15 @@ sources:
        pattern: '~1'
 
 targets:
-  dockerfile:
-    name: "Bump to latest coredns version in Dockerfile"
-    kind: dockerfile
-    scmid: default
-    sourceid: coredns
-    spec:
-      file: "Dockerfile"
-      instruction:
-        keyword: "ARG"
-        matcher: "TAG"
-
-  makefile:
-    name: "Bump to latest coredns version in Makefile"
+  tagfile:
+    name: "Bump to latest coredns version in TAG"
     kind: file
     scmid: default
     disablesourceinput: true
     spec:
-      file: Makefile
-      matchpattern: '(?m)^TAG \:\= (.*)'
-      replacepattern: 'TAG := {{ source "coredns" }}$$(BUILD_META)'
+      file: TAG
+      matchpattern: '(?m)^(.+)$'
+      replacepattern: '{{ source "coredns" }}'
 
   readme:
     name: "Bump to latest coredns version in README"
