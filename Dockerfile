@@ -4,7 +4,6 @@ ARG GO_IMAGE=rancher/hardened-build-base:v1.25.14b1
 # Image that provides cross compilation tooling.
 FROM --platform=$BUILDPLATFORM rancher/mirrored-tonistiigi-xx:1.6.1 AS xx
 
-FROM ${BCI_IMAGE} AS bci
 FROM --platform=$BUILDPLATFORM ${GO_IMAGE} AS base-builder
 # copy xx scripts to your build stage
 COPY --from=xx / /
@@ -45,6 +44,6 @@ FROM ${GO_IMAGE} AS strip_binary
 COPY --from=coredns-builder /usr/local/bin/coredns /coredns
 RUN strip /coredns
 
-FROM bci AS coredns
+FROM ${BCI_IMAGE} AS coredns
 COPY --from=strip_binary /coredns /coredns
 ENTRYPOINT ["/coredns"]
