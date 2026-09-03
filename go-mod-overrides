@@ -13,3 +13,7 @@
 # CVE-2026-56865 (sumdb/tlog transparency log tile verification bypass) — HIGH.
 # Drop once upstream requires golang.org/x/mod >= v0.40.0.
 -replace golang.org/x/mod=golang.org/x/mod@v0.40.0
+
+# google.golang.org/grpc: CVE-2026-84304 (HIGH); bump to v1.83.1.
+# Drop once upstream requires google.golang.org/grpc >= v1.83.1.
+-replace google.golang.org/grpc=google.golang.org/grpc@v1.83.1
