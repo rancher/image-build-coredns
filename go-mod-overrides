@@ -8,3 +8,8 @@
 # CVE-2026-56855/78662 (ssh channel DoS) — golang.org/x/crypto/ssh.
 # Drop once upstream requires golang.org/x/crypto >= v0.56.0.
 -replace golang.org/x/crypto=golang.org/x/crypto@v0.56.0
+
+# golang.org/x/mod: CVE-2026-56864 (malicious GOSUMDB serving arbitrary module content),
+# CVE-2026-56865 (sumdb/tlog transparency log tile verification bypass) — HIGH.
+# Drop once upstream requires golang.org/x/mod >= v0.40.0.
+-replace golang.org/x/mod=golang.org/x/mod@v0.40.0
