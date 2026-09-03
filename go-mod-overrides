@@ -3,3 +3,17 @@
 # Use it to force patched dependency versions, e.g. to address CVEs not yet
 # picked up upstream:
 #   -replace golang.org/x/text=golang.org/x/text@v0.39.0
+
+# golang.org/x/crypto: CVE-2026-56854 (CRITICAL, ssh source-address auth bypass),
+# CVE-2026-56855/78662 (ssh channel DoS) — golang.org/x/crypto/ssh.
+# Drop once upstream requires golang.org/x/crypto >= v0.56.0.
+-replace golang.org/x/crypto=golang.org/x/crypto@v0.56.0
+
+# golang.org/x/mod: CVE-2026-56864 (malicious GOSUMDB serving arbitrary module content),
+# CVE-2026-56865 (sumdb/tlog transparency log tile verification bypass) — HIGH.
+# Drop once upstream requires golang.org/x/mod >= v0.40.0.
+-replace golang.org/x/mod=golang.org/x/mod@v0.40.0
+
+# google.golang.org/grpc: CVE-2026-84304 (HIGH); bump to v1.83.1.
+# Drop once upstream requires google.golang.org/grpc >= v1.83.1.
+-replace google.golang.org/grpc=google.golang.org/grpc@v1.83.1
