@@ -3,3 +3,7 @@
 # Use it to force patched dependency versions, e.g. to address CVEs not yet
 # picked up upstream:
 #   -replace golang.org/x/text=golang.org/x/text@v0.39.0
+
+# google.golang.org/grpc: CVE-2026-84304, CVE-2026-84445 (HIGH), CVE-2026-84303 (MEDIUM); bump to v1.83.2.
+# Drop once upstream requires google.golang.org/grpc >= v1.83.2.
+-replace google.golang.org/grpc=google.golang.org/grpc@v1.83.2
