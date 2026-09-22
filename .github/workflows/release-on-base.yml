@@ -82,5 +82,5 @@ jobs:
         with:
           owner: ${{ github.repository_owner }}
           repo: ${{ github.event.repository.name }}
-          commitish: 'main'
+          commitish: 'master'
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
