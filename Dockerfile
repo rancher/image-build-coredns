@@ -22,8 +22,7 @@ WORKDIR $GOPATH/src/${PKG}
 RUN git fetch --all --tags --prune
 RUN git checkout tags/${TAG} -b ${TAG}
 COPY go-mod-overrides ./go-mod-overrides
-RUN go-mod-overrides.sh ./go-mod-overrides
-RUN go mod download
+RUN go-mod-replacer -local ./go-mod-overrides
 # cross-compilation setup
 ARG TARGETPLATFORM TARGETARCH
 RUN xx-go --wrap && \
