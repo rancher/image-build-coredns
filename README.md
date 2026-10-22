@@ -12,5 +12,5 @@ which provides the latest supported Go toolchain (FIPS/BoringCrypto-enabled on a
 ## Build
 
 ```sh
-TAG=v1.14.7 make
+TAG=v1.15.0 make
 ```
