@@ -29,16 +29,6 @@ targets:
       matchpattern: '(?m)^(.+)$'
       replacepattern: '{{ source "coredns" }}'
 
-  readme:
-    name: "Bump to latest coredns version in README"
-    kind: file
-    scmid: default
-    disablesourceinput: true
-    spec:
-      file: README.md
-      matchpattern: '(?m)^TAG=(.*)'
-      replacepattern: 'TAG={{ source "coredns" }} make'
-
 scms:
   default:
     kind: github
